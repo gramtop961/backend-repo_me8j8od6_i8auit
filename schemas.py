@@ -11,8 +11,8 @@ Model name is converted to lowercase for the collection name:
 - BlogPost -> "blogs" collection
 """
 
-from pydantic import BaseModel, Field
-from typing import Optional
+from pydantic import BaseModel, Field, EmailStr
+from typing import Optional, Literal
 
 # Example schemas (replace with your own):
 
@@ -38,6 +38,19 @@ class Product(BaseModel):
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
 
+# Invitation website schemas
+
+class RSVP(BaseModel):
+    """
+    RSVP collection schema
+    Collection name: "rsvp"
+    """
+    name: str = Field(..., min_length=2, description="Guest full name")
+    email: Optional[EmailStr] = Field(None, description="Guest email")
+    attending: Literal["yes", "no", "maybe"] = Field("yes", description="Attendance response")
+    guests: int = Field(1, ge=0, le=10, description="Number of additional guests")
+    message: Optional[str] = Field(None, max_length=500, description="Optional message to the couple")
+    
 # Add your own schemas here:
 # --------------------------------------------------
 
